@@ -267,12 +267,12 @@ ssp_autochenkin() {
             username_prefix="${username%%@*}"
             username_suffix="${username#*@}"
             username_root="${username_suffix#*.}"
-            username_text="${username_prefix:0:2}🙈@${username_suffix:0:2}🙈.${username_root}"
+            username_text="${username_prefix:0:2}🙈@${username_suffix}.${username_root}"
 
             domain_protocol="${domain%%://*}"
             domain_context="${domain##*//}"
             domain_root="${domain##*.}"
-            domain_text="${domain_protocol}://${domain_context:0:2}🙈.${domain_root}"
+            domain_text="${domain_protocol}://${domain_context}.${domain_root}"
 
             if [ -z "${domain}" ] || [ -z "${username}" ] || [ -z "${passwd}" ]; then
                 echo "账号信息配置异常，请检查配置" && exit 1
