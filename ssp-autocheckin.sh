@@ -201,6 +201,25 @@ send_message() {
         fi
     fi
 
+    # PushDeer 通知
+    if [ "${PUSHDEER_KEY}" ]; then
+       push=$(curl -k -s "https://api2.pushdeer.com/message/push?pushkey=${PUSHDEER_KEY}}" \
+        -H 'Content-Type: application/json' \
+        -d "{
+            \"msgtype\": \"markdown\",
+            \"markdown\": {
+                \"title\":\"${TITLE}\",
+                \"text\": \"${log_text}\"
+            }
+        }")
+        push_code=$(echo ${push} | jq -r ".errcode" 2>&1)
+        if [ "${push_code}" -eq 0 ]; then
+            echo -e "PushDeer推送结果: 成功"
+        else
+            echo -e "PushDeer推送结果: 失败"
+        fi
+    fi
+
     # 企业微信通知
     if [ "${WEWORK_ID}" ] && [ "${WEWORK_AGENT_ID}" ] && [ "${WEWORK_SECRET}" ]; then
         # 获取 token
